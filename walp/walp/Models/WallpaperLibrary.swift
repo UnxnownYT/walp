@@ -12,8 +12,11 @@ final class WallpaperLibrary: ObservableObject {
     }
     var featured: Wallpaper? { wallpapers.first }
 
+    private let lastKey = "walp.lastWallpaperTitle"
+
     func apply(_ wallpaper: Wallpaper) {
         current = wallpaper
+        UserDefaults.standard.set(wallpaper.title, forKey: lastKey)
         // Muro-style: play the video directly on the desktop, in-app.
         if let url = wallpaper.bundledURL {
             DesktopWallpaperController.shared.play(url)
@@ -23,7 +26,16 @@ final class WallpaperLibrary: ObservableObject {
     /// Stop the live wallpaper and return to the system desktop.
     func clear() {
         current = nil
+        UserDefaults.standard.removeObject(forKey: lastKey)
         DesktopWallpaperController.shared.stop()
+    }
+
+    /// Reapply the last-used wallpaper on launch.
+    func restoreLast() {
+        guard current == nil,
+              let title = UserDefaults.standard.string(forKey: lastKey),
+              let wallpaper = wallpapers.first(where: { $0.title == title }) else { return }
+        apply(wallpaper)
     }
 }
 
@@ -32,13 +44,13 @@ extension Wallpaper {
         // Abstract — bundled in the app, Public Domain (VJ MoRpH / Internet Archive).
         // Download these 4 and name them exactly as the bundledResource below.
         .init(title: "Rainbow Swirl", category: .abstract, author: "VJ MoRpH", colors: [.pink, .purple],
-              bundledResource: "rainbow-swirl.mp4"),
+              bundledResource: "DaftRainbowSwirlAVS1_512kb.mp4"),
         .init(title: "Flow Stripes",  category: .abstract, author: "VJ MoRpH", colors: [.orange, .pink],
-              bundledResource: "flow-stripes.mp4"),
+              bundledResource: "FlowStripes01_1_512kb.mp4"),
         .init(title: "Dot Tunnel",    category: .abstract, author: "VJ MoRpH", colors: [.cyan, .blue],
-              bundledResource: "dot-tunnel.mp4"),
+              bundledResource: "RGBsoftDots3dtunnelMove01_1_640_512kb.mp4"),
         .init(title: "Star Clone",    category: .abstract, author: "VJ MoRpH", colors: [.indigo, .purple],
-              bundledResource: "star-clone.mp4"),
+              bundledResource: "StarWithColourClone02_640_512kb.mp4"),
 
         // Space — NASA SVS (Public Domain). Large files, so download-on-demand later
         // via remoteURL (not yet wired; these show but won't apply until Drop 3).

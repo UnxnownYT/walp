@@ -10,6 +10,7 @@ struct WalpApp: App {
                 .environmentObject(library)
                 .frame(minWidth: 900, minHeight: 600)
                 .preferredColorScheme(.dark)
+                .onAppear { library.restoreLast() }
         }
         .windowStyle(.hiddenTitleBar)
 
