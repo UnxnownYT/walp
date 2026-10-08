@@ -21,23 +21,42 @@ struct BrowseView: View {
             }
             .padding(24)
         }
-        .background(.black)
+        .background(backdrop)
+    }
+
+    // Dark gradient so the Liquid Glass elements have something to refract.
+    private var backdrop: some View {
+        LinearGradient(colors: [Color(red: 0.05, green: 0.05, blue: 0.09),
+                                Color(red: 0.02, green: 0.02, blue: 0.04)],
+                       startPoint: .top, endPoint: .bottom)
+            .ignoresSafeArea()
     }
 
     private var categoryChips: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                ForEach(Wallpaper.Category.allCases) { category in
-                    let selected = library.selectedCategory == category
-                    Text(category.rawValue)
-                        .font(.subheadline.weight(.medium))
-                        .padding(.horizontal, 14).padding(.vertical, 7)
-                        .background(selected ? AnyShapeStyle(.tint)
-                                             : AnyShapeStyle(.regularMaterial), in: Capsule())
-                        .foregroundStyle(selected ? .white : .primary)
-                        .onTapGesture { library.selectedCategory = category }
-                }
+                ForEach(Wallpaper.Category.allCases) { chip(for: $0) }
+            }
+            .padding(.vertical, 2)
+        }
+    }
+
+    @ViewBuilder
+    private func chip(for category: Wallpaper.Category) -> some View {
+        let selected = library.selectedCategory == category
+        let label = Text(category.rawValue)
+            .font(.subheadline.weight(.medium))
+            .padding(.horizontal, 14).padding(.vertical, 7)
+            .foregroundStyle(selected ? .white : .primary)
+
+        Group {
+            if selected {
+                label.glassyTinted(.capsule, tint: .accentColor)
+            } else {
+                label.glassy(.capsule)
             }
         }
+        .contentShape(Capsule())
+        .onTapGesture { library.selectedCategory = category }
     }
 }

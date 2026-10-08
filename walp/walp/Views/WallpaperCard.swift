@@ -7,30 +7,32 @@ struct WallpaperCard: View {
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .fill(wallpaper.gradient)
                 .aspectRatio(16/10, contentMode: .fit)
 
-            LinearGradient(colors: [.clear, .black.opacity(0.55)],
-                           startPoint: .center, endPoint: .bottom)
-                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(wallpaper.title).font(.headline)
-                Text(wallpaper.author).font(.caption).foregroundStyle(.white.opacity(0.7))
+            // Liquid Glass label strip floating over the thumbnail.
+            HStack(spacing: 8) {
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(wallpaper.title).font(.subheadline.weight(.semibold))
+                    Text(wallpaper.author).font(.caption2).foregroundStyle(.secondary)
+                }
+                Spacer()
+                if isCurrent {
+                    Image(systemName: "play.circle.fill").foregroundStyle(.white)
+                }
             }
-            .padding(12).foregroundStyle(.white)
-
-            if isCurrent {
-                Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(.white, .green).padding(10)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-            }
+            .padding(10)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .glassy(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .padding(8)
         }
-        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous)
-            .strokeBorder(.white.opacity(hovering ? 0.4 : 0.08), lineWidth: 1))
+        .overlay(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .strokeBorder(.white.opacity(hovering ? 0.5 : 0.08), lineWidth: 1)
+        )
         .scaleEffect(hovering ? 1.02 : 1)
-        .shadow(color: .black.opacity(hovering ? 0.4 : 0), radius: 12, y: 6)
+        .shadow(color: .black.opacity(hovering ? 0.45 : 0), radius: 14, y: 8)
         .animation(.easeOut(duration: 0.18), value: hovering)
         .onHover { hovering = $0 }
     }

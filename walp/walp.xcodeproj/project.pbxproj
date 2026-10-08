@@ -10,9 +10,23 @@
 		D394F3DC3077A2AF0048ED6E /* walp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = walp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D394F41E3077CF430048ED6E /* Exceptions for "walp" folder in "walp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Engine/WallpaperInstaller.swift,
+				Extension/LibraryWatcher.swift,
+			);
+			target = D394F3DB3077A2AF0048ED6E /* walp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		D394F3DE3077A2AF0048ED6E /* walp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D394F41E3077CF430048ED6E /* Exceptions for "walp" folder in "walp" target */,
+			);
 			path = walp;
 			sourceTree = "<group>";
 		};
