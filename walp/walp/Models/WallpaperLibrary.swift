@@ -17,9 +17,11 @@ final class WallpaperLibrary: ObservableObject {
     func apply(_ wallpaper: Wallpaper) {
         current = wallpaper
         UserDefaults.standard.set(wallpaper.title, forKey: lastKey)
-        // Muro-style: play the video directly on the desktop, in-app.
+        // Desktop: play in-app. Lock screen: hand the same video to the extension.
         if let url = wallpaper.bundledURL {
             DesktopWallpaperController.shared.play(url)
+            let name = wallpaper.title
+            Task { await WallpaperInstaller.deploy(url: url, name: name) }
         }
     }
 
